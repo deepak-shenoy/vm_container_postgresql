@@ -1,0 +1,23 @@
+---
+   # Detailed specific Postgresql Configuration/Setup
+   # Deepak Shenoy, November 12, 2015
+   #
+   
+   - copy: src={{postg_rpm1}} dest={{download_folder}}/{{postg_rpm1}}
+   - copy: src={{postg_rpm2}} dest={{download_folder}}/{{postg_rpm2}}
+   - copy: src={{postg_rpm3}} dest={{download_folder}}/{{postg_rpm3}}
+   - copy: src={{postg_rpm4}} dest={{download_folder}}/{{postg_rpm4}}
+   
+   - yum: name={{download_folder}}/{{postg_rpm1}} state=present
+   - yum: name={{download_folder}}/{{postg_rpm2}} state=present
+   - yum: name={{download_folder}}/{{postg_rpm3}} state=present
+   - yum: name={{download_folder}}/{{postg_rpm4}} state=present
+   
+   - command: /usr/pgsql-9.4/bin/postgresql94-setup initdb
+   
+   # DShenoy ~ TODO: Cleanup, set for on bootup service starts
+   - command: systemctl enable postgresql-9.4.service
+   # DShenoy ~ TODO: Cleanup, use something like "service: name=postgresql enabled=yes state=started"
+   - command: systemctl start postgresql-9.4.service 
+   
+ 

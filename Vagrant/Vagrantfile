@@ -1,0 +1,19 @@
+   Vagrant.configure("2") do |config|
+      config.vm.box = "relativkreativ/centos-7-minimal"  
+      config.ssh.insert_key = false # For testing purposes don't use private keys
+      
+      config.vm.define :dbinfo do |dbserver|
+        dbserver.vm.network :private_network, type: "dhcp"
+        dbserver.vm.network "forwarded_port", guest: 80, host: 81 
+        dbserver.vm.network "forwarded_port", guest: 8080, host: 8081
+        dbserver.vm.hostname = "infodb01"
+        
+        dbserver.vm.provision "ansible" do |ansible|
+          ansible.playbook = "../Ansible/MainPlaybook.yml"
+          ansible.verbose = "vvvv"
+        end
+      end
+   end
+      
+      
+      
